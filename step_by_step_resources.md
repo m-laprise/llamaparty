@@ -10,7 +10,7 @@ How to work with Open-Source LLMs: resources for social scientists
 
 # Obtaining pre-trained weights: Hugging Face 101
 
-Useful resource:
+Useful resources:
 * [Hugging Face Transformers Library (Python library documentation)](https://huggingface.co/docs/transformers/philosophy), built by and for the open-source community
   * Hugging Face is a great way to get started with LLMs. For most social science use cases, it probably represents the ideal trade-off between ease of use and flexibility
 * [Model Hub](https://huggingface.co/models)
@@ -20,14 +20,14 @@ Useful resource:
 ## Three classes:
 HF simplifies the pipeline for using any model in its library to three classes of objects:
 
-1. Models: This object stores the pre-trained weights. For us, it will be a PyTorch model, `torch.nn.Module`.
-2. Configurations: This object stores the hyperparameters (number of layers, size of layers, etc.). You only need to set it manually if you intend to do some training or fine-tuning.
-3. Input adapted pre-processing: This object maps the raw training data into a processed version that can be used for training or fine-tuning. For LLMs, this is a tokenizer and it stores the vocabulary and methods for encoding strings (making them machine-readable) and decoding strings (making them human-readable).
+1. **Models**: This object stores the pre-trained weights. For us, it will be a PyTorch model, `torch.nn.Module`.
+2. **Configurations**: This object stores the hyperparameters (number of layers, size of layers, etc.). You only need to set it manually if you intend to do some training or fine-tuning.
+3. Input adapted **pre-processing**: This object maps the raw training data into a processed version that can be used for training or fine-tuning. For LLMs, this is a tokenizer and it stores the vocabulary and methods for encoding strings (making them machine-readable) and decoding strings (making them human-readable).
 
 ## Three methods:
 
 ### (1) Loading:
-The first step is to select a "pretrained checkpoint" from the HF Hub (or a locally saved checkpoint). The `from_pretrained()` method initializes all three required classess by downloading, caching, and loading class instances and related data. Such data includes, for instance, hyperparameters, vocabulary, and weights.
+The first step is to select a "pretrained checkpoint" from the HF Hub (or a locally saved checkpoint). The `from_pretrained()` method initializes all three required classes by downloading, caching, and loading class instances and related data. Such data includes, for instance, hyperparameters, vocabulary, and weights.
 
 ### (2) Saving and (3) publishing:
 If you make modifications to either of the three classes (model, configuration, tokenizer), you can save a checkpoint locally with the `to_pretrained()` method, for subsequent retrieval with `from_pretrained()`.  If you want to publish the checkpoint to share it with others, you can use the `push_to_hub()` method instead.
@@ -36,12 +36,10 @@ If you make modifications to either of the three classes (model, configuration, 
 There are two main APIs: an upstream `Trainer` to train or fine-tune PyTorch models and a downstream `pipeline()` for inference. This is modular so different frameworks (PyTorch or other) can be used for training and inference, and we can easily switch the model, parameter, or pre-processing that we are using.
 
 # Fine-tuning
-
+## Practical guides
 Useful resources:
 * [The Novice's LLM Training Guide (blog)](https://rentry.co/llm-training) by [Alpin Dale](https://github.com/AlpinDale)
   * A step-by-step guide to fine-tuning, LoRA, QLoRA, and more.
-* [Non-engineers guide: Train a LLaMA 2 chatbot (HF blog)](https://huggingface.co/blog/Llama2-for-non-engineers) by Andrew Jardine and Abhishek Thakur
-  * How to fine-tune a LlaMa model for chat without writing any code (this is more of an "at-home" version for those without access to high-performance computing and/or without coding experience)
 * [Transformer Math 101 (blog)](https://blog.eleuther.ai/transformer-math/) by Quentin Anthony, Stella Biderman, Hailey Schoelkopf
   * Useful rules of thumb to estimate computation and memory usage for various transformers tasks
   * See also [Model training anatomy (HF docs)](https://huggingface.co/docs/transformers/model_memory_anatomy) for a more detailed explanation of memory use during training
@@ -49,6 +47,13 @@ Useful resources:
   * Avoid reinventing the wheel by first looking for similar examples in the many scripts shared in those two repos
 * [Tips for Working with HF on Princeton's Research Computing Clusters](https://researchcomputing.princeton.edu/support/knowledge-base/hugging-face)
   * Avoid memory and storage issues on the HPC cluster
+* [Non-engineers guide: Train a LLaMA 2 chatbot (HF blog)](https://huggingface.co/blog/Llama2-for-non-engineers) by Andrew Jardine and Abhishek Thakur
+  * How to fine-tune a LlaMa model for chat without writing any code (this is more of an "at-home" version for those without access to high-performance computing and/or without coding experience)
+
+## Researchers choices in fine-tuning paradigms and methods
+
+* Reinforcement learning with human feedback: [Fine-tuning 20B LLMs with RLHF on a 24GB consumer GPU](https://huggingface.co/blog/trl-peft) (HF blog)
+* Regularization: [NEFTUNE: Noisy Embeddings Improve Finetuning](https://arxiv.org/pdf/2310.05914.pdf) (Jain et al. 2023) (Pre-print)
 
 # Inference
 
@@ -73,3 +78,7 @@ In Python:
 * The [`spaCy` library](https://spacy.io/usage/spacy-101) allows you to use local models for various NLP tasks.
   * The LLM integration is relatively new. See the [documentation](https://spacy.io/usage/large-language-models)
   * Useful library extensions include [SpanMarker for named entity recognition](https://tomaarsen.github.io/SpanMarkerNER/notebooks/spacy_integration.html)
+
+# What about non-language tasks?
+
+* [Probabilistic Time Series Forecasting with 🤗 Transformers](https://huggingface.co/blog/time-series-transformers) by Niels Rogge and Kashif Rasul
