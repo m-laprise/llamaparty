@@ -1,4 +1,4 @@
-How to work with Open-Source LLMs: resources for social scientists
+How to work with Open-Source LLMs: resources for social scientists (working draft)
 ==============
 
 **Last updated:** *Oct-14 2023*
@@ -16,6 +16,9 @@ Useful resources:
 * [Model Hub](https://huggingface.co/models)
   * Start with a model from this list
 * To go further: [Complete Transformers Course](https://huggingface.co/learn/nlp-course/chapter1/1) and its [Github repo](https://github.com/huggingface/course)
+
+Why pre-trained?
+* See white paper on [Current Best Practices for Training LLMs from Scratch](https://files.catbox.moe/6x8ct9.pdf) by Rebecca Li, Andrea Parker, Justin Tenuto
 
 ## Three classes:
 HF simplifies the pipeline for using any model in its library to three classes of objects:
@@ -35,7 +38,7 @@ If you make modifications to either of the three classes (model, configuration, 
 ## Two APIs:
 There are two main APIs: an upstream `Trainer` to train or fine-tune PyTorch models and a downstream `pipeline()` for inference. This is modular so different frameworks (PyTorch or other) can be used for training and inference, and we can easily switch the model, parameter, or pre-processing that we are using.
 
-# Fine-tuning
+# Fine-tuning or Low-Rank Adaptation (LoRA)
 ## Practical guides
 Useful resources:
 * [The Novice's LLM Training Guide (blog)](https://rentry.co/llm-training) by [Alpin Dale](https://github.com/AlpinDale)
@@ -50,6 +53,27 @@ Useful resources:
 * [Non-engineers guide: Train a LLaMA 2 chatbot (HF blog)](https://huggingface.co/blog/Llama2-for-non-engineers) by Andrew Jardine and Abhishek Thakur
   * How to fine-tune a LlaMa model for chat without writing any code (this is more of an "at-home" version for those without access to high-performance computing and/or without coding experience)
 
+For models with billions of parameters, fine-tuning requires hundreds of GBs of VRAM. For a 7B model, fine-tuning requires up to ~200GB of memory. You should have at least 100MB of high-quality fine-tuning data.
+
+Steps to process data for fine-tuning: parse, cluster, filter, prepare for tokenization, create train/validation splits. If training data too large, convert to Apache Arrow. Processing will vary depending on choice of fine-tuning method (supervised, unsupervised, RLHF, etc.)
+
+It is generally much easier to use a single GPU if hardware requirements allow it, because of complications caused by model parallelism.
+
+Memory can be reduced to 1/3 of the initial requirement by using LoRA:
+
+* See [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) (article)
+* See [PEFT: Parameter-Efficient Fine-Tuning of Billion-Scale Models on Low-Resource Hardware](https://huggingface.co/blog/peft) (HF blog)
+
+If that is still untractable, it can be further reduced with Quantized LoRA:
+
+* This relies on the `bitsandbytes` Python library
+* More about quantization here: 
+  * [QLoRA: Efficient Finetuning of Quantized LLMs](https://arxiv.org/abs/2305.14314) and [LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale](https://arxiv.org/abs/2208.07339) (articles) 
+  * [LLM.int8() and Emergent Features](https://timdettmers.com/2022/08/17/llm-int8-and-emergent-features/) (blog about theory) by Tim Dettmers
+  * [A Gentle Introduction to 8-bit Matrix Multiplication for transformers at scale using Hugging Face Transformers, Accelerate and bitsandbytes](https://huggingface.co/blog/hf-bitsandbytes-integration) (blog about application) by Younes Belkada and Tim Dettmers
+
+With QLoRA, it becomes possible to fine-tune a 65B parameter model on a single 48GB GPU.
+
 ## Researchers choices in fine-tuning paradigms and methods
 
 * Reinforcement learning with human feedback: [Fine-tuning 20B LLMs with RLHF on a 24GB consumer GPU](https://huggingface.co/blog/trl-peft) (HF blog)
@@ -61,6 +85,12 @@ Useful resources:
 * [Llama 2 Fine-tuning / Inference Recipes and Examples (Github)](https://github.com/facebookresearch/llama-recipes/)
 * [Tips for Working with HF on Princeton's Research Computing Clusters](https://researchcomputing.princeton.edu/support/knowledge-base/hugging-face)
 
+To go further:
+* [Transformer Inference Arithmetic](https://kipp.ly/transformer-inference-arithmetic/) (blog)
+
+If you need to run the model locally on CPU only:
+* [Llama.cpp](https://github.com/ggerganov/llama.cpp) for fast / efficient inference locally on a MacBook, command line interface
+* [Oobabooga](https://github.com/oobabooga/text-generation-webui) for a web-based user interface to Transformers or Llama.cpp
 
 # Incorporating LLMs in downstream tasks
 
