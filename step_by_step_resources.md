@@ -7,7 +7,9 @@ How to work with Open-Source LLMs: resources for social scientists (working draf
 
 # Useful prerequisites
 
-* [Practical Deep Learning for Coders](https://course.fast.ai/)
+* [Practical Deep Learning for Coders (free course)](https://course.fast.ai/) by fast.ai and Jeremy Howard
+* [Understanding Large Language Models: A Cross-Section of the Most Relevant Literature To Get Up to Speed](https://magazine.sebastianraschka.com/p/understanding-large-language-models) by Sebastian Raschka
+* [REFORMS: Reporting Standards for Machine Learning Based Science (pre-print)](https://arxiv.org/abs/2308.07832)
 
 # Obtaining pre-trained weights: Hugging Face 101
 
@@ -16,12 +18,32 @@ Useful resources:
   * Hugging Face is a great way to get started with LLMs. For most social science use cases, it probably represents the ideal trade-off between ease of use and flexibility
 * [Model Hub](https://huggingface.co/models)
   * Start with a model from this list
-* [What LLM to use?](https://github.com/continuedev/what-llm-to-use)
-  * An overview of both open-source and commercial options, up to date October 2023, with a focus on coding-specific tasks
+* Choosing a model:
+  * This 2023 review paper [Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond](https://arxiv.org/abs/2304.13712) includes a discussion of available foundation model families and architectures, both commercial and open-source, with their respective strengths and limitations, along with a great family tree visualization
+  * The [Transformer models: an introduction and catalog — 2023 Edition (blog)](https://amatriain.net/blog/transformer-models-an-introduction-and-catalog-2d1e9039f376/), and now its associated pre-print [Transformer models: an introduction and catalog](https://arxiv.org/abs/2302.07730), "a short and simple catalog and classification of the most popular Transformer models."
+    * It includes introductory explanations about transformers and goes over all transformer based models which are either open-source or for which sufficient information has been released to the public. 
+    * This is a fairly exhaustive list, and the authors have been updating it every few months.
+  * [What LLM to use?](https://github.com/continuedev/what-llm-to-use) is a brief overview of both open-source and commercial **coding-specific** models, up to date October 2023
 * To go further: [Complete Transformers Course](https://huggingface.co/learn/nlp-course/chapter1/1) and its [Github repo](https://github.com/huggingface/course)
 
 Why pre-trained?
 * See white paper on [Current Best Practices for Training LLMs from Scratch](https://files.catbox.moe/6x8ct9.pdf) by Rebecca Li, Andrea Parker, Justin Tenuto
+
+Important criteria for choosing a model include:
+
+* Model size (in billions of parameters)
+  * This is the usual trade-off between computing resources and model abilities. See fine-tuning section and inference sections below for rules of thumb about resources required for various model sizes.
+* Context length
+  * This may matter for whether the task you hope to accomplish is achievable; and it matters to some extent for the resources required for fine-tuning and inference (see below).
+  * If context length matters for the nature of your task, you need to pay close attention to the context length on which the foundation model for the model you are looking at (e.g. LlaMA for all models derived from LlaMA) was trained. 
+  * Although nothing prevents anyone from technically increasing the context length of a foundation model, you may experience degeneracy in the output, because while the model becomes technically able to look past e.g. 2048 tokens, it is undertrained to process state vectors of that length. 
+  * If you use an already fine-tuned model, pay attention to the length of the data that was used in fine-tuning. If all inputs and outputs were much shorter than the context window, extensive fine-tuning may have degraded the ability of your model to handle long sequences.
+  * There maybe an upper limit to the context length that a model of a given size (in billions of parameters) can handle well, given the complexity of long-range pattern.
+  * See [this Reddit answer](https://www.reddit.com/r/LocalLLaMA/comments/13ed7re/comment/jjq7mg5/?utm_source=share&utm_medium=web2x&context=3) by an [ExLlama](https://github.com/turboderp/exllama) developper for more on this issue.
+* Base model vs instruct/chat version
+* License
+* Knowledge of training corpus
+* Fit between model and task
 
 ## Three classes:
 HF simplifies the pipeline for using any model in its library to three classes of objects:
@@ -42,7 +64,17 @@ If you make modifications to either of the three classes (model, configuration, 
 There are two main APIs: an upstream `Trainer` to train or fine-tune PyTorch models and a downstream `pipeline()` for inference. This is modular so different frameworks (PyTorch or other) can be used for training and inference, and we can easily switch the model, parameter, or pre-processing that we are using.
 
 # Fine-tuning or Low-Rank Adaptation (LoRA)
+
+When do I need to fine-tune?
+
+* When using state-of-the-art commercial models (for instance, GPT-4 or Anthropic's Claude), a lot of tasks can be achieved either zero-shot or using in-context learning (providing a few examples in the prompt), with carefully crafted prompts. 
+  * In addition, some commercial models may only be available for inference through an API, without access to the weights, in which case it may be impossible to fine-tune it locally.
+* Open-source models, on average at this moment, do not perform as well on as large a variety of tasks "out of the box." It is often advantageous to fine-tune them for the specific domain or task you are considering.
+  * Open-source models are open, so it is generally possible to access the pre-trained weights for purposes of further training.
+* Ultimately, you need to try it and decide -- for my specific use case, is the performance of the pre-trained model "good enough" based on a pre-determined definition of what good means for this task?
+
 ## Practical guides
+
 Useful resources:
 * [The Novice's LLM Training Guide (blog)](https://rentry.co/llm-training) by [Alpin Dale](https://github.com/AlpinDale)
   * A step-by-step guide to fine-tuning, LoRA, QLoRA, and more.
@@ -85,14 +117,27 @@ With QLoRA, it becomes possible to fine-tune a 65B parameter model on a single 4
 
 # Inference
 
+Here, you have to decide if you will run the model locally on your PC or if you will host it somewhere for inference. Part of this equation is how much computing power and RAM you have available, and how many tokens per second you need to be able to generate.
+
+Note the trade-off between context length and resources required for inference. 
+
+* Because the model, when generating each new token, looks at *all* tokens that came before it, the increase in resources required is more than linear in the context length. That said, although you will often read it is quadratic, in practice, there are many tricks you can use to improve efficiency so that it may end up being closer to linear, especially for quantized models.
+
 Useful resources:
+
 * [Llama 2 Fine-tuning / Inference Recipes and Examples (Github)](https://github.com/facebookresearch/llama-recipes/)
 * [Tips for Working with HF on Princeton's Research Computing Clusters](https://researchcomputing.princeton.edu/support/knowledge-base/hugging-face)
 
+What is a quantized model?
+
+* [To be written]
+
 To go further:
+
 * [Transformer Inference Arithmetic](https://kipp.ly/transformer-inference-arithmetic/) (blog)
 
-If you need to run the model locally on CPU only:
+Some user friendly / laptop friendly tools:
+
 * [Llama.cpp](https://github.com/ggerganov/llama.cpp) for fast / efficient inference locally on a MacBook, command line interface
 * [Oobabooga](https://github.com/oobabooga/text-generation-webui) for a web-based user interface to Transformers or Llama.cpp
 
