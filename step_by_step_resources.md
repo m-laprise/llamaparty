@@ -17,7 +17,7 @@ Useful resources:
 * [Model Hub](https://huggingface.co/models)
   * Start with a model from this list
 * [What LLM to use?](https://github.com/continuedev/what-llm-to-use)
-  * An overview of both open-source and commercial options, up to date October 2023
+  * An overview of both open-source and commercial options, up to date October 2023, with a focus on coding-specific tasks
 * To go further: [Complete Transformers Course](https://huggingface.co/learn/nlp-course/chapter1/1) and its [Github repo](https://github.com/huggingface/course)
 
 Why pre-trained?
