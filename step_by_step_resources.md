@@ -2,6 +2,7 @@ How to work with Open-Source LLMs: resources for social scientists (working draf
 ==============
 
 **Last updated:** *Oct-14 2023*
+
 **Authors:** *Marie-Lou Laprise and Angela Li*
 
 # Useful prerequisites
@@ -15,6 +16,8 @@ Useful resources:
   * Hugging Face is a great way to get started with LLMs. For most social science use cases, it probably represents the ideal trade-off between ease of use and flexibility
 * [Model Hub](https://huggingface.co/models)
   * Start with a model from this list
+* [What LLM to use?](https://github.com/continuedev/what-llm-to-use)
+  * An overview of both open-source and commercial options, up to date October 2023
 * To go further: [Complete Transformers Course](https://huggingface.co/learn/nlp-course/chapter1/1) and its [Github repo](https://github.com/huggingface/course)
 
 Why pre-trained?
@@ -46,6 +49,7 @@ Useful resources:
 * [Transformer Math 101 (blog)](https://blog.eleuther.ai/transformer-math/) by Quentin Anthony, Stella Biderman, Hailey Schoelkopf
   * Useful rules of thumb to estimate computation and memory usage for various transformers tasks
   * See also [Model training anatomy (HF docs)](https://huggingface.co/docs/transformers/model_memory_anatomy) for a more detailed explanation of memory use during training
+* [Llama Factory (Github)](https://github.com/hiyouga/LLaMA-Factory): code, json datasets, and other resources to help fine-tune some LLMs; supports Llama and Llama-2
 * [Llama 2 Fine-tuning / Inference Recipes and Examples (Github)](https://github.com/facebookresearch/llama-recipes/) and [Hugging Face's Transformers Examples (Github)](https://github.com/huggingface/transformers/tree/main/examples)
   * Avoid reinventing the wheel by first looking for similar examples in the many scripts shared in those two repos
 * [Tips for Working with HF on Princeton's Research Computing Clusters](https://researchcomputing.princeton.edu/support/knowledge-base/hugging-face)
