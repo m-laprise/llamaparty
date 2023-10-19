@@ -93,11 +93,24 @@ Datasets for fine-tuning:
 * Instruction-following examples: [`databricks-dolly-15k` (dataset)](https://huggingface.co/datasets/databricks/databricks-dolly-15k)
 * [Llama Factory (Github)](https://github.com/hiyouga/LLaMA-Factory): code, json datasets, and other resources to help fine-tune some LLMs; supports Llama and Llama-2
 
-For models with billions of parameters, fine-tuning requires hundreds of GBs of VRAM. For a 7B model, fine-tuning requires up to ~200GB of memory. You should have at least 100MB of high-quality fine-tuning data.
+You should have at least 100MB of high-quality fine-tuning data.
 
 Steps to process data for fine-tuning: parse, cluster, filter, prepare for tokenization, create train/validation splits. If training data too large, convert to Apache Arrow. Processing will vary depending on choice of fine-tuning method (supervised, unsupervised, RLHF, etc.)
 
 It is generally much easier to use a single GPU if hardware requirements allow it, because of complications caused by model parallelism.
+
+To go further:
+
+* Two review papers about the training process for transformers:
+  * [Efficient Transformers: A Survey](https://arxiv.org/abs/2009.06732) (09-2020)
+  * [A Survey on Efficient Training of Transformers](https://arxiv.org/abs/2302.01107) (05-2023)
+* Understanding how transformers learn:
+  * [Can LLMs learn from a single example? (blog)](https://www.fast.ai/posts/2023-09-04-learning-jumps/) (09-2023)
+  * [Bridging the data gap between children and large language models (article)](https://www.sciencedirect.com/science/article/pii/S1364661323002036) (11-2023)
+
+## Researchers choices in fine-tuning paradigms and methods
+
+For models with billions of parameters, fine-tuning requires hundreds of GBs of VRAM. For a 7B model, fine-tuning requires up to ~200GB of memory. 
 
 Memory can be reduced to 1/3 of the initial requirement by using **LoRA**:
 
@@ -114,17 +127,7 @@ If that is still untractable, it can be further reduced with **Quantized LoRA** 
 
 With QLoRA, it becomes possible to fine-tune a 65B parameter model on a single 48GB GPU.
 
-To go further:
-
-* Two review papers about the training process for transformers:
-  * [Efficient Transformers: A Survey](https://arxiv.org/abs/2009.06732) (09-2020)
-  * [A Survey on Efficient Training of Transformers](https://arxiv.org/abs/2302.01107) (05-2023)
-* Understanding how transformers learn:
-  * [Can LLMs learn from a single example? (blog)](https://www.fast.ai/posts/2023-09-04-learning-jumps/) (09-2023)
-  * [Bridging the data gap between children and large language models (article)](https://www.sciencedirect.com/science/article/pii/S1364661323002036) (11-2023)
-
-## Researchers choices in fine-tuning paradigms and methods
-
+Other things to consider:
 
 * Regularization: 
   * [NEFTUNE: Noisy Embeddings Improve Finetuning (Pre-print)](https://arxiv.org/pdf/2310.05914.pdf) (Jain et al. 10-2023) 
