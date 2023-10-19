@@ -108,6 +108,7 @@ To go further:
   * [Can LLMs learn from a single example? (blog)](https://www.fast.ai/posts/2023-09-04-learning-jumps/) (09-2023)
   * [Bridging the data gap between children and large language models (article)](https://www.sciencedirect.com/science/article/pii/S1364661323002036) (11-2023)
   * [Visualizing the Loss Landscape of Neural Nets](https://arxiv.org/abs/1712.09913) (12-2017)
+  * [An Empirical Investigation of Catastrophic Forgetting in Gradient-Based Neural Networks](https://arxiv.org/abs/1312.6211) (12-2013)
 
 ## Researchers choices in fine-tuning paradigms and methods
 
