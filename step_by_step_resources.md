@@ -3,7 +3,7 @@ How to work with Open-Source LLMs: resources for social scientists (working draf
 
 **Last updated:** *Oct-18 2023*
 
-**Authors:** *Marie-Lou Laprise and Angela Li*
+**Author:** *Marie-Lou Laprise*
 
 # Useful prerequisites
 
@@ -14,17 +14,17 @@ How to work with Open-Source LLMs: resources for social scientists (working draf
 # Obtaining pre-trained weights: Hugging Face 101
 
 Useful resources:
+
 * [Hugging Face Transformers Library (Python library documentation)](https://huggingface.co/docs/transformers/philosophy), built by and for the open-source community
   * Hugging Face is a great way to get started with LLMs. For most social science use cases, it probably represents the ideal trade-off between ease of use and flexibility
 * [Model Hub](https://huggingface.co/models)
   * Start with a model from this list
-* Choosing a model:
-  * This 2023 review paper [Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond](https://arxiv.org/abs/2304.13712) includes a discussion of available foundation model families and architectures, both commercial and open-source, with their respective strengths and limitations, along with a great family tree visualization
-  * The [Transformer models: an introduction and catalog — 2023 Edition (blog)](https://amatriain.net/blog/transformer-models-an-introduction-and-catalog-2d1e9039f376/), and now its associated pre-print [Transformer models: an introduction and catalog](https://arxiv.org/abs/2302.07730), "a short and simple catalog and classification of the most popular Transformer models."
-    * It includes introductory explanations about transformers and goes over all transformer based models which are either open-source or for which sufficient information has been released to the public. 
-    * This is a fairly exhaustive list, and the authors have been updating it every few months.
-  * [What LLM to use?](https://github.com/continuedev/what-llm-to-use) is a brief overview of both open-source and commercial **coding-specific** models, up to date October 2023
 * To go further: [Complete Transformers Course](https://huggingface.co/learn/nlp-course/chapter1/1) and its [Github repo](https://github.com/huggingface/course)
+* Choosing a model:
+  * This 2023 review paper [Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond](https://arxiv.org/abs/2304.13712) includes a discussion of available foundation model families and architectures, both commercial and open-source, with their respective strengths and limitations, along with a great **family tree** visualization
+  * The [Transformer models: an introduction and catalog — 2023 Edition (blog)](https://amatriain.net/blog/transformer-models-an-introduction-and-catalog-2d1e9039f376/), and now its associated pre-print [Transformer models: an introduction and catalog](https://arxiv.org/abs/2302.07730), "a short and simple catalog and classification of the most popular Transformer models."
+    * This is a fairly exhaustive list, and the authors have been updating it every few months, but it does not include much information about each model.
+  * [What LLM to use?](https://github.com/continuedev/what-llm-to-use) is a brief overview of both open-source and commercial **coding-specific** models, up to date October 2023
 
 Why pre-trained?
 * See white paper on [Current Best Practices for Training LLMs from Scratch](https://files.catbox.moe/6x8ct9.pdf) by Rebecca Li, Andrea Parker, Justin Tenuto
@@ -38,7 +38,7 @@ Important criteria for choosing a model include:
   * If context length matters for the nature of your task, you need to pay close attention to the context length on which the foundation model for the model you are looking at (e.g. LlaMA for all models derived from LlaMA) was trained. 
   * Although nothing prevents anyone from technically increasing the context length of a foundation model, you may experience degeneracy in the output, because while the model becomes technically able to look past e.g. 2048 tokens, it is undertrained to process state vectors of that length. 
   * If you use an already fine-tuned model, pay attention to the length of the data that was used in fine-tuning. If all inputs and outputs were much shorter than the context window, extensive fine-tuning may have degraded the ability of your model to handle long sequences.
-  * There maybe an upper limit to the context length that a model of a given size (in billions of parameters) can handle well, given the complexity of long-range pattern.
+  * There may be an upper limit to the context length that a model of a given size (in billions of parameters) can handle well, given the complexity of long-range patterns.
   * See [this Reddit answer](https://www.reddit.com/r/LocalLLaMA/comments/13ed7re/comment/jjq7mg5/?utm_source=share&utm_medium=web2x&context=3) by an [ExLlama](https://github.com/turboderp/exllama) developper for more on this issue.
 * Base model vs instruct/chat version
 * License
@@ -67,10 +67,10 @@ There are two main APIs: an upstream `Trainer` to train or fine-tune PyTorch mod
 
 When do I need to fine-tune?
 
-* When using state-of-the-art commercial models (for instance, GPT-4 or Anthropic's Claude), a lot of tasks can be achieved either zero-shot or using in-context learning (providing a few examples in the prompt), with carefully crafted prompts. 
-  * In addition, some commercial models may only be available for inference through an API, without access to the weights, in which case it may be impossible to fine-tune it locally.
-* Open-source models, on average at this moment, do not perform as well on as large a variety of tasks "out of the box." It is often advantageous to fine-tune them for the specific domain or task you are considering.
-  * Open-source models are open, so it is generally possible to access the pre-trained weights for purposes of further training.
+* When using state-of-the-art commercial models (for instance, GPT-4 or Anthropic's Claude 2), a lot of tasks can be achieved either zero-shot or using in-context learning (providing a few examples in the prompt), with carefully crafted prompts. 
+  * In addition, some commercial models may only be available for inference through an API, without access to the weights, in which case it may be impossible to fine-tune locally.
+* Open-source models, on average at this moment, do not perform as well on as large a variety of tasks "out of the box" (compared to GPT-4 or Claude 2). It is often advantageous to fine-tune them for the specific domain or task you are considering.
+  * Open-source models are open, so it is generally possible to access the pre-trained weights for fine-tuning.
 * Ultimately, you need to try it and decide -- for my specific use case, is the performance of the pre-trained model "good enough" based on a pre-determined definition of what good means for this task?
 
 ## Practical guides
