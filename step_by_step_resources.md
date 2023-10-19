@@ -81,13 +81,17 @@ Useful resources:
 * [Transformer Math 101 (blog)](https://blog.eleuther.ai/transformer-math/) by Quentin Anthony, Stella Biderman, Hailey Schoelkopf
   * Useful rules of thumb to estimate computation and memory usage for various transformers tasks
   * See also [Model training anatomy (HF docs)](https://huggingface.co/docs/transformers/model_memory_anatomy) for a more detailed explanation of memory use during training
-* [Llama Factory (Github)](https://github.com/hiyouga/LLaMA-Factory): code, json datasets, and other resources to help fine-tune some LLMs; supports Llama and Llama-2
 * [Llama 2 Fine-tuning / Inference Recipes and Examples (Github)](https://github.com/facebookresearch/llama-recipes/) and [Hugging Face's Transformers Examples (Github)](https://github.com/huggingface/transformers/tree/main/examples)
   * Avoid reinventing the wheel by first looking for similar examples in the many scripts shared in those two repos
 * [Tips for Working with HF on Princeton's Research Computing Clusters](https://researchcomputing.princeton.edu/support/knowledge-base/hugging-face)
   * Avoid memory and storage issues on the HPC cluster
 * [Non-engineers guide: Train a LLaMA 2 chatbot (HF blog)](https://huggingface.co/blog/Llama2-for-non-engineers) by Andrew Jardine and Abhishek Thakur
   * How to fine-tune a LlaMa model for chat without writing any code (this is more of an "at-home" version for those without access to high-performance computing and/or without coding experience)
+
+Datasets for fine-tuning:
+
+* Instruction-following examples: [`databricks-dolly-15k` (dataset)](https://huggingface.co/datasets/databricks/databricks-dolly-15k)
+* [Llama Factory (Github)](https://github.com/hiyouga/LLaMA-Factory): code, json datasets, and other resources to help fine-tune some LLMs; supports Llama and Llama-2
 
 For models with billions of parameters, fine-tuning requires hundreds of GBs of VRAM. For a 7B model, fine-tuning requires up to ~200GB of memory. You should have at least 100MB of high-quality fine-tuning data.
 
@@ -110,10 +114,36 @@ If that is still untractable, it can be further reduced with Quantized LoRA:
 
 With QLoRA, it becomes possible to fine-tune a 65B parameter model on a single 48GB GPU.
 
+To go further:
+
+* Two review papers about the training process for transformers:
+  * [Efficient Transformers: A Survey](https://arxiv.org/abs/2009.06732) (09-2020)
+  * [A Survey on Efficient Training of Transformers](https://arxiv.org/abs/2302.01107) (05-2023)
+
 ## Researchers choices in fine-tuning paradigms and methods
 
-* Reinforcement learning with human feedback: [Fine-tuning 20B LLMs with RLHF on a 24GB consumer GPU](https://huggingface.co/blog/trl-peft) (HF blog)
-* Regularization: [NEFTUNE: Noisy Embeddings Improve Finetuning](https://arxiv.org/pdf/2310.05914.pdf) (Jain et al. 2023) (Pre-print)
+
+* Regularization: 
+  * [NEFTUNE: Noisy Embeddings Improve Finetuning](https://arxiv.org/pdf/2310.05914.pdf) (Jain et al. 2023) (Pre-print)
+
+# Aligment
+
+It's important to be aware that fine-tuning a "censored" foundation model can degrade its safety or helpfulness and increase its likelihood to output dangerous or harmful text. 
+
+* Foundation models are often created by following three steps: pretraining, fine-tuning, alignment (see the [InstructGPT paper]((https://arxiv.org/abs/2203.02155))). By going back to fine-tune more, you can undo some of the alignment step.
+
+If your model will be deployed in production, you should consider "re-aligning" it.
+
+[...section in progress...]
+
+* Reinforcement learning from human feedback:
+  * The InstructGPT paper: [Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155)
+  * [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862)
+  * RLHF at home: [Fine-tuning 20B LLMs with RLHF on a 24GB consumer GPU](https://huggingface.co/blog/trl-peft) (HF blog)
+* Alternatives to RLHF:
+  * Hindsight Instruction Labeling: [The Wisdom of Hindsight Makes Language Models Better Instruction Followers](https://arxiv.org/abs/2302.05206) (02-2023)
+  * Direct Preference Optimization: [Direct Preference Optimization: Your Language Model is Secretly a Reward Model](https://arxiv.org/abs/2305.18290) (05-2023)
+  * Reinforcement Learning with AI Feedback: [RLAIF: Scaling Reinforcement Learning from Human Feedback with AI Feedback](https://arxiv.org/abs/2309.00267) (09-2023)
 
 # Inference
 
