@@ -119,6 +119,9 @@ To go further:
 * Two review papers about the training process for transformers:
   * [Efficient Transformers: A Survey](https://arxiv.org/abs/2009.06732) (09-2020)
   * [A Survey on Efficient Training of Transformers](https://arxiv.org/abs/2302.01107) (05-2023)
+* Understanding how transformers learn:
+  * [Can LLMs learn from a single example? (blog)](https://www.fast.ai/posts/2023-09-04-learning-jumps/) (09-2023)
+  * [Bridging the data gap between children and large language models (article)](https://www.sciencedirect.com/science/article/pii/S1364661323002036) (11-2023)
 
 ## Researchers choices in fine-tuning paradigms and methods
 
