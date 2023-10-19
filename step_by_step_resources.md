@@ -128,17 +128,18 @@ To go further:
 
 # Aligment
 
-It's important to be aware that fine-tuning a "censored" foundation model can degrade its safety or helpfulness and increase its likelihood to output dangerous or harmful text. 
+It's important to be aware that fine-tuning a "censored" foundation model can degrade its safety or helpfulness and increase its likelihood to output dangerous or harmful text:
 
 * Foundation models are often created by following three steps: pretraining, fine-tuning, alignment (see the [InstructGPT paper]((https://arxiv.org/abs/2203.02155))). By going back to fine-tune more, you can undo some of the alignment step.
+* See [Fine-tuning Aligned Language Models Compromises Safety, Even When Users Do Not Intend To!](https://arxiv.org/abs/2310.03693) (10-2023)
 
 If your model will be deployed in production, you should consider "re-aligning" it.
 
 [...section in progress...]
 
 * Reinforcement learning from human feedback:
-  * The InstructGPT paper: [Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155)
-  * [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862)
+  * The InstructGPT paper: [Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155) (03-2022)
+  * [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862) (04-2022)
   * RLHF at home: [Fine-tuning 20B LLMs with RLHF on a 24GB consumer GPU](https://huggingface.co/blog/trl-peft) (HF blog)
 * Alternatives to RLHF:
   * Hindsight Instruction Labeling: [The Wisdom of Hindsight Makes Language Models Better Instruction Followers](https://arxiv.org/abs/2302.05206) (02-2023)
