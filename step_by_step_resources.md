@@ -173,14 +173,19 @@ What is a quantized model?
 
 * [To be written]
 
-To go further:
-
-* [Transformer Inference Arithmetic](https://kipp.ly/transformer-inference-arithmetic/) (blog)
-
 Some user friendly / laptop friendly tools:
 
 * [Llama.cpp](https://github.com/ggerganov/llama.cpp) for fast / efficient inference locally on a MacBook, command line interface
 * [Oobabooga](https://github.com/oobabooga/text-generation-webui) for a web-based user interface to Transformers or Llama.cpp
+
+To go further:
+
+* [Transformer Inference Arithmetic](https://kipp.ly/transformer-inference-arithmetic/) (blog)
+* Understanding how LLMs do inference and how to prompt them best:
+  * LLMs often perform better on complex tasks when asked to reason step by step.
+    * Chain-of-thought prompting: [Chain-of-Thought Prompting Elicits Reasoning in Large Language Models](https://proceedings.neurips.cc/paper_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract-Conference.html) (2022)
+    * Chain-of-thought with self-consistency: [Self-Consistency Improves Chain of Thought Reasoning in Language Models](https://arxiv.org/abs/2203.11171) (03-2022)
+    * Tree-of-thought prompting: [Tree of Thoughts: Deliberate Problem Solving with Large Language Models (pre-print)](https://arxiv.org/abs/2305.10601) (05-2023) and its [Github repo](https://github.com/princeton-nlp/tree-of-thought-llm)
 
 # Incorporating LLMs in downstream tasks
 
