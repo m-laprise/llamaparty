@@ -35,7 +35,7 @@ Important criteria for choosing a model include:
   * This is the usual trade-off between computing resources and model abilities. See fine-tuning section and inference sections below for rules of thumb about resources required for various model sizes.
 * Context length
   * This may matter for whether the task you hope to accomplish is achievable; and it matters to some extent for the resources required for fine-tuning and inference (see below).
-  * If context length matters for the nature of your task, you need to pay close attention to the context length on which the foundation model for the model you are looking at (e.g. LlaMA for all models derived from LlaMA) was trained. 
+  * If context length matters for the nature of your task, you need to pay close attention to the context length on which the foundation model for the model you are looking at (e.g. Llama for all models derived from Llama) was trained. 
   * Although nothing prevents anyone from technically increasing the context length of a foundation model, you may experience degeneracy in the output, because while the model becomes technically able to look past e.g. 2048 tokens, it is undertrained to process state vectors of that length. 
   * If you use an already fine-tuned model, pay attention to the length of the data that was used in fine-tuning. If all inputs and outputs were much shorter than the context window, extensive fine-tuning may have degraded the ability of your model to handle long sequences.
   * There may be an upper limit to the context length that a model of a given size (in billions of parameters) can handle well, given the complexity of long-range patterns.
@@ -86,7 +86,7 @@ Useful resources:
 * [Tips for Working with HF on Princeton's Research Computing Clusters](https://researchcomputing.princeton.edu/support/knowledge-base/hugging-face)
   * Avoid memory and storage issues on the HPC cluster
 * [Non-engineers guide: Train a LLaMA 2 chatbot (HF blog)](https://huggingface.co/blog/Llama2-for-non-engineers) by Andrew Jardine and Abhishek Thakur
-  * How to fine-tune a LlaMa model for chat without writing any code (this is more of an "at-home" version for those without access to high-performance computing and/or without coding experience)
+  * How to fine-tune a Llama model for chat without writing any code (this is more of an "at-home" version for those without access to high-performance computing and/or without coding experience)
 
 Datasets for fine-tuning:
 
@@ -99,14 +99,14 @@ Steps to process data for fine-tuning: parse, cluster, filter, prepare for token
 
 It is generally much easier to use a single GPU if hardware requirements allow it, because of complications caused by model parallelism.
 
-Memory can be reduced to 1/3 of the initial requirement by using LoRA:
+Memory can be reduced to 1/3 of the initial requirement by using **LoRA**:
 
 * See [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) (article)
 * See [PEFT: Parameter-Efficient Fine-Tuning of Billion-Scale Models on Low-Resource Hardware](https://huggingface.co/blog/peft) (HF blog)
 
-If that is still untractable, it can be further reduced with Quantized LoRA:
+If that is still untractable, it can be further reduced with **Quantized LoRA** (QLoRA):
 
-* This relies on the `bitsandbytes` Python library
+* This relies on the `bitsandbytes` [Python library](https://github.com/TimDettmers/bitsandbytes)
 * More about quantization here: 
   * [QLoRA: Efficient Finetuning of Quantized LLMs](https://arxiv.org/abs/2305.14314) and [LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale](https://arxiv.org/abs/2208.07339) (articles) 
   * [LLM.int8() and Emergent Features](https://timdettmers.com/2022/08/17/llm-int8-and-emergent-features/) (blog about theory) by Tim Dettmers
@@ -124,7 +124,9 @@ To go further:
 
 
 * Regularization: 
-  * [NEFTUNE: Noisy Embeddings Improve Finetuning](https://arxiv.org/pdf/2310.05914.pdf) (Jain et al. 2023) (Pre-print)
+  * [NEFTUNE: Noisy Embeddings Improve Finetuning (Pre-print)](https://arxiv.org/pdf/2310.05914.pdf) (Jain et al. 10-2023) 
+
+[...to be completed...]
 
 # Aligment
 
@@ -137,14 +139,14 @@ If your model will be deployed in production, you should consider "re-aligning" 
 
 [...section in progress...]
 
-* Reinforcement learning from human feedback:
+* **Reinforcement learning from human feedback**:
   * The InstructGPT paper: [Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155) (03-2022)
   * [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862) (04-2022)
   * RLHF at home: [Fine-tuning 20B LLMs with RLHF on a 24GB consumer GPU](https://huggingface.co/blog/trl-peft) (HF blog)
 * Alternatives to RLHF:
-  * Hindsight Instruction Labeling: [The Wisdom of Hindsight Makes Language Models Better Instruction Followers](https://arxiv.org/abs/2302.05206) (02-2023)
-  * Direct Preference Optimization: [Direct Preference Optimization: Your Language Model is Secretly a Reward Model](https://arxiv.org/abs/2305.18290) (05-2023)
-  * Reinforcement Learning with AI Feedback: [RLAIF: Scaling Reinforcement Learning from Human Feedback with AI Feedback](https://arxiv.org/abs/2309.00267) (09-2023)
+  * **Hindsight Instruction Labeling**: [The Wisdom of Hindsight Makes Language Models Better Instruction Followers](https://arxiv.org/abs/2302.05206) (02-2023)
+  * **Direct Preference Optimization**: [Direct Preference Optimization: Your Language Model is Secretly a Reward Model](https://arxiv.org/abs/2305.18290) (05-2023)
+  * **Reinforcement Learning with AI Feedback**: [RLAIF: Scaling Reinforcement Learning from Human Feedback with AI Feedback](https://arxiv.org/abs/2309.00267) (09-2023)
 
 # Inference
 
