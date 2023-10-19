@@ -1,7 +1,7 @@
 How to work with Open-Source LLMs: resources for social scientists (working draft)
 ==============
 
-**Last updated:** *Oct-14 2023*
+**Last updated:** *Oct-18 2023*
 
 **Authors:** *Marie-Lou Laprise and Angela Li*
 
