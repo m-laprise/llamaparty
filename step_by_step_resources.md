@@ -106,7 +106,7 @@ To go further:
   * [A Survey on Efficient Training of Transformers](https://arxiv.org/abs/2302.01107) (05-2023)
 * Understanding how transformers learn:
   * [Can LLMs learn from a single example? (blog)](https://www.fast.ai/posts/2023-09-04-learning-jumps/) (09-2023)
-  * [Bridging the data gap between children and large language models (article)](https://www.sciencedirect.com/science/article/pii/S1364661323002036) (11-2023)
+  * [A Theory for Emergence of Complex Skills in Language Models](https://arxiv.org/abs/2307.15936) (07-2023)
   * [Visualizing the Loss Landscape of Neural Nets](https://arxiv.org/abs/1712.09913) (12-2017)
   * [An Empirical Investigation of Catastrophic Forgetting in Gradient-Based Neural Networks](https://arxiv.org/abs/1312.6211) (12-2013)
 
@@ -131,6 +131,8 @@ With QLoRA, it becomes possible to fine-tune a 65B parameter model on a single 4
 
 Other things to consider:
 
+* Memory-efficient zerothorder optimizer (MeZO): see [Fine-Tuning Language Models with Just Forward Passes](https://arxiv.org/abs/2305.17333) (05-2023)
+  * Can be used in combination with LoRA
 * Regularization: 
   * [NEFTUNE: Noisy Embeddings Improve Finetuning (Pre-print)](https://arxiv.org/pdf/2310.05914.pdf) (Jain et al. 10-2023) 
 
