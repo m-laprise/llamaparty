@@ -46,14 +46,14 @@ Important criteria for choosing a model include:
 What does the training corpus contain for the model I chose? *(section in progress)*
 
 * We know very little about this for most foundation models. Transparency is very heterogenous across model families and models.
-* Some models for which we know more about the data (to be verified):
+* Models with open data:
   * EleutherAI models (open models, dataset documentation, training scripts)
-    * LleMA, Pythia, RWKV, GPT-J/GPT-Neo/GPT-NeoX-20B
-    * Third-party fine-tunes: Dolly 2.0
-  * Falcon (RefinedWeb)
-  * MosaicML MPT 7/30 (mix and sources known but not exact procedure or code)
-  * T5 family (C4)
-* See also https://allenai.org/olmo
+    * LleMA, Pythia, RWKV, GPT-J/GPT-Neo/GPT-NeoX-20B (The Pile and other datasets made public)
+* Models for which we have at least partial knowledge about the data:
+  * Abu Dhabi Technology Innovation Institute's Falcon (around 80% based on RefinedWeb, itself built from the CommonCrawl, plus other curated sources. A portion of RefinedWeb was released to the public.)
+  * MosaicML MPT family (custom mixture of 1T tokens from public data sources in known percentages, but exact corpus not made available. For instance, the training data for MPT-30b was 34% mC4 3.1, 30% C4, 10% The Stack, 9% RedPajama Common Crawl, etc.)
+  * Google's T5 (C4)
+* See also AllenAI's [OLMo](https://allenai.org/olmo) project and its pre-training dataset Dolma (data already available, model expected 2024)
 
 ### How to access the weights: Hugging Face 101
 
