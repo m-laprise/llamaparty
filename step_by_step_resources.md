@@ -1,33 +1,29 @@
-How to work with Open-Source LLMs: resources for social scientists (working draft)
-==============
+# How to work with local language models: resources for social scientists (working draft)
 
-**Last updated:** *Oct-18 2023*
+**Last updated:** *Nov-16 2023*
 
 **Author:** *Marie-Lou Laprise*
 
-# Useful prerequisites
+## Useful prerequisites
 
 * [Practical Deep Learning for Coders (free course)](https://course.fast.ai/) by fast.ai and Jeremy Howard
 * [Understanding Large Language Models: A Cross-Section of the Most Relevant Literature To Get Up to Speed](https://magazine.sebastianraschka.com/p/understanding-large-language-models) by Sebastian Raschka
 * [REFORMS: Reporting Standards for Machine Learning Based Science (pre-print)](https://arxiv.org/abs/2308.07832)
 
-# Obtaining pre-trained weights: Hugging Face 101
+## Obtaining pre-trained weights
 
-Useful resources:
-
-* [Hugging Face Transformers Library (Python library documentation)](https://huggingface.co/docs/transformers/philosophy), built by and for the open-source community
-  * Hugging Face is a great way to get started with LLMs. For most social science use cases, it probably represents the ideal trade-off between ease of use and flexibility
-* [Model Hub](https://huggingface.co/models)
-  * Start with a model from this list
-* To go further: [Complete Transformers Course](https://huggingface.co/learn/nlp-course/chapter1/1) and its [Github repo](https://github.com/huggingface/course)
-* Choosing a model:
-  * This 2023 review paper [Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond](https://arxiv.org/abs/2304.13712) includes a discussion of available foundation model families and architectures, both commercial and open-source, with their respective strengths and limitations, along with a great **family tree** visualization
-  * The [Transformer models: an introduction and catalog — 2023 Edition (blog)](https://amatriain.net/blog/transformer-models-an-introduction-and-catalog-2d1e9039f376/), and now its associated pre-print [Transformer models: an introduction and catalog](https://arxiv.org/abs/2302.07730), "a short and simple catalog and classification of the most popular Transformer models."
-    * This is a fairly exhaustive list, and the authors have been updating it every few months, but it does not include much information about each model.
-  * [What LLM to use?](https://github.com/continuedev/what-llm-to-use) is a brief overview of both open-source and commercial **coding-specific** models, up to date October 2023
+### Choosing a foundation model
 
 Why pre-trained?
+
 * See white paper on [Current Best Practices for Training LLMs from Scratch](https://files.catbox.moe/6x8ct9.pdf) by Rebecca Li, Andrea Parker, Justin Tenuto
+
+Choosing a model:
+
+* This 2023 review paper [Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond](https://arxiv.org/abs/2304.13712) includes a discussion of available foundation model families and architectures, both commercial and open-source, with their respective strengths and limitations, along with a great **family tree** visualization
+* The [Transformer models: an introduction and catalog — 2023 Edition (blog)](https://amatriain.net/blog/transformer-models-an-introduction-and-catalog-2d1e9039f376/), and now its associated pre-print [Transformer models: an introduction and catalog](https://arxiv.org/abs/2302.07730), "a short and simple catalog and classification of the most popular Transformer models."
+  * This is a fairly exhaustive list, and the authors have been updating it every few months, but it does not include much information about each model.
+* [What LLM to use?](https://github.com/continuedev/what-llm-to-use) is a brief overview of both open-source and commercial **coding-specific** models, up to date October 2023
 
 Important criteria for choosing a model include:
 
@@ -44,26 +40,54 @@ Important criteria for choosing a model include:
 * License
 * Knowledge of training corpus
 * Fit between model and task
+* Model architecture
+  * The overwhelming majority of LLMs are based on the transformers architecture. However, see also [RWKV](https://www.rwkv.com/) by EleutherAI ([paper](https://arxiv.org/pdf/2305.13048.pdf), [wiki](https://wiki.rwkv.com/)) which claims to be the first RNN-based LLM with transformers-level performance.
 
-## Three classes:
+What does the training corpus contain for the model I chose? *(section in progress)*
+
+* We know very little about this for most foundation models. Transparency is very heterogenous across model families and models.
+* Some models for which we know more about the data (to be verified):
+  * EleutherAI models (open models, dataset documentation, training scripts)
+    * LleMA, Pythia, RWKV, GPT-J/GPT-Neo/GPT-NeoX-20B
+    * Third-party fine-tunes: Dolly 2.0
+  * Falcon (RefinedWeb)
+  * MosaicML MPT 7/30 (mix and sources known but not exact procedure or code)
+  * T5 family (C4)
+* See also https://allenai.org/olmo
+
+### How to access the weights: Hugging Face 101
+
+Useful resources:
+
+* [Hugging Face Transformers Library (Python library documentation)](https://huggingface.co/docs/transformers/philosophy), built by and for the open-source community
+  * Hugging Face is a great way to get started with LLMs. For most social science use cases, it probably represents the ideal trade-off between ease of use and flexibility
+* [Model Hub](https://huggingface.co/models)
+  * Find your model in this list
+* To go further: HF's [Complete Transformers Course](https://huggingface.co/learn/nlp-course/chapter1/1) and its [Github repo](https://github.com/huggingface/course)
+
+#### Three classes:
+
 HF simplifies the pipeline for using any model in its library to three classes of objects:
 
 1. **Models**: This object stores the pre-trained weights. For us, it will be a PyTorch model, `torch.nn.Module`.
 2. **Configurations**: This object stores the hyperparameters (number of layers, size of layers, etc.). You only need to set it manually if you intend to do some training or fine-tuning.
 3. Input adapted **pre-processing**: This object maps the raw training data into a processed version that can be used for training or fine-tuning. For LLMs, this is a tokenizer and it stores the vocabulary and methods for encoding strings (making them machine-readable) and decoding strings (making them human-readable).
 
-## Three methods:
+#### Three methods:
 
-### (1) Loading:
+##### (1) Loading:
+
 The first step is to select a "pretrained checkpoint" from the HF Hub (or a locally saved checkpoint). The `from_pretrained()` method initializes all three required classes by downloading, caching, and loading class instances and related data. Such data includes, for instance, hyperparameters, vocabulary, and weights.
 
-### (2) Saving and (3) publishing:
+##### (2) Saving and (3) publishing:
+
 If you make modifications to either of the three classes (model, configuration, tokenizer), you can save a checkpoint locally with the `to_pretrained()` method, for subsequent retrieval with `from_pretrained()`.  If you want to publish the checkpoint to share it with others, you can use the `push_to_hub()` method instead.
 
-## Two APIs:
+#### Two APIs:
+
 There are two main APIs: an upstream `Trainer` to train or fine-tune PyTorch models and a downstream `pipeline()` for inference. This is modular so different frameworks (PyTorch or other) can be used for training and inference, and we can easily switch the model, parameter, or pre-processing that we are using.
 
-# Fine-tuning or Low-Rank Adaptation (LoRA)
+## Fine-tuning or Low-Rank Adaptation (LoRA)
 
 When do I need to fine-tune?
 
@@ -73,9 +97,10 @@ When do I need to fine-tune?
   * Open-source models are open, so it is generally possible to access the pre-trained weights for fine-tuning.
 * Ultimately, you need to try it and decide -- for my specific use case, is the performance of the pre-trained model "good enough" based on a pre-determined definition of what good means for this task?
 
-## Practical guides
+### Practical guides
 
 Useful resources:
+
 * [The Novice's LLM Training Guide (blog)](https://rentry.co/llm-training) by [Alpin Dale](https://github.com/AlpinDale)
   * A step-by-step guide to fine-tuning, LoRA, QLoRA, and more.
 * [Transformer Math 101 (blog)](https://blog.eleuther.ai/transformer-math/) by Quentin Anthony, Stella Biderman, Hailey Schoelkopf
@@ -110,7 +135,7 @@ To go further:
   * [Visualizing the Loss Landscape of Neural Nets](https://arxiv.org/abs/1712.09913) (12-2017)
   * [An Empirical Investigation of Catastrophic Forgetting in Gradient-Based Neural Networks](https://arxiv.org/abs/1312.6211) (12-2013)
 
-## Researchers choices in fine-tuning paradigms and methods
+### Researchers' choices in fine-tuning paradigms and methods
 
 For models with billions of parameters, fine-tuning requires hundreds of GBs of VRAM. For a 7B model, fine-tuning requires up to ~200GB of memory. 
 
@@ -138,7 +163,7 @@ Other things to consider:
 
 [...to be completed...]
 
-# Aligment
+## Alignment
 
 It's important to be aware that fine-tuning a "censored" foundation model can degrade its safety or helpfulness and increase its likelihood to output dangerous or harmful text:
 
@@ -158,7 +183,7 @@ If your model will be deployed in production, you should consider "re-aligning" 
   * **Direct Preference Optimization**: [Direct Preference Optimization: Your Language Model is Secretly a Reward Model](https://arxiv.org/abs/2305.18290) (05-2023)
   * **Reinforcement Learning with AI Feedback**: [RLAIF: Scaling Reinforcement Learning from Human Feedback with AI Feedback](https://arxiv.org/abs/2309.00267) (09-2023)
 
-# Inference
+## Inference
 
 Here, you have to decide if you will run the model locally on your PC or if you will host it somewhere for inference. Part of this equation is how much computing power and RAM you have available, and how many tokens per second you need to be able to generate.
 
@@ -189,7 +214,7 @@ To go further:
     * Chain-of-thought with self-consistency: [Self-Consistency Improves Chain of Thought Reasoning in Language Models](https://arxiv.org/abs/2203.11171) (03-2022)
     * Tree-of-thought prompting: [Tree of Thoughts: Deliberate Problem Solving with Large Language Models (pre-print)](https://arxiv.org/abs/2305.10601) (05-2023) and its [Github repo](https://github.com/princeton-nlp/tree-of-thought-llm)
 
-# Incorporating LLMs in downstream tasks
+## Incorporating LLMs in downstream tasks
 
 In R:
 
@@ -206,6 +231,6 @@ In Python:
   * The LLM integration is relatively new. See the [documentation](https://spacy.io/usage/large-language-models)
   * Useful library extensions include [SpanMarker for named entity recognition](https://tomaarsen.github.io/SpanMarkerNER/notebooks/spacy_integration.html)
 
-# What about non-language tasks?
+## What about non-language tasks?
 
 * [Probabilistic Time Series Forecasting with 🤗 Transformers](https://huggingface.co/blog/time-series-transformers) by Niels Rogge and Kashif Rasul
