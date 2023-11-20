@@ -23,6 +23,7 @@ Choosing a model:
 * This 2023 review paper [Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond](https://arxiv.org/abs/2304.13712) includes a discussion of available foundation model families and architectures, both commercial and open-source, with their respective strengths and limitations, along with a great **family tree** visualization
 * The [Transformer models: an introduction and catalog — 2023 Edition (blog)](https://amatriain.net/blog/transformer-models-an-introduction-and-catalog-2d1e9039f376/), and now its associated pre-print [Transformer models: an introduction and catalog](https://arxiv.org/abs/2302.07730), "a short and simple catalog and classification of the most popular Transformer models."
   * This is a fairly exhaustive list, and the authors have been updating it every few months, but it does not include much information about each model.
+* [Open LLMs](https://github.com/eugeneyan/open-llms): list of "open" LLMs (general and for code) and LLM datasets for pre-training and fine-tuning
 * [What LLM to use?](https://github.com/continuedev/what-llm-to-use) is a brief overview of both open-source and commercial **coding-specific** models, up to date October 2023
 
 Important criteria for choosing a model include:
@@ -41,19 +42,19 @@ Important criteria for choosing a model include:
 * Knowledge of training corpus
 * Fit between model and task
 * Model architecture
-  * The overwhelming majority of LLMs are based on the transformers architecture. However, see also [RWKV](https://www.rwkv.com/) by EleutherAI ([paper](https://arxiv.org/pdf/2305.13048.pdf), [wiki](https://wiki.rwkv.com/)) which claims to be the first RNN-based LLM with transformers-level performance.
+  * The overwhelming majority of LLMs are based on the transformers architecture. However, see also [RWKV](https://www.rwkv.com/) by EleutherAI ([paper](https://arxiv.org/pdf/2305.13048.pdf), [wiki](https://wiki.rwkv.com/), [blog 1](https://johanwind.github.io/2023/03/23/rwkv_overview.html) and [blog 2](https://johanwind.github.io/2023/03/23/rwkv_details.html)) which claims to be the first RNN-based LLM with transformers-level performance.
 
-What does the training corpus contain for the model I chose? *(section in progress)*
+What does the pre-training corpus contain for the model I chose? *(section in progress)*
 
 * We know very little about this for most foundation models. Transparency is very heterogenous across model families and models.
 * Models with open data:
   * EleutherAI models (open models, dataset documentation, training scripts)
     * LleMA, Pythia, RWKV, GPT-J/GPT-Neo/GPT-NeoX-20B (The Pile and other datasets made public)
+  * See also AllenAI's [OLMo](https://allenai.org/olmo) project and its pre-training dataset Dolma (data already available, model expected 2024)
 * Models for which we have at least partial knowledge about the data:
   * Abu Dhabi Technology Innovation Institute's Falcon (around 80% based on RefinedWeb, itself built from the CommonCrawl, plus other curated sources. A portion of RefinedWeb was released to the public.)
   * MosaicML MPT family (custom mixture of 1T tokens from public data sources in known percentages, but exact corpus not made available. For instance, the training data for MPT-30b was 34% mC4 3.1, 30% C4, 10% The Stack, 9% RedPajama Common Crawl, etc.)
   * Google's T5 (C4)
-* See also AllenAI's [OLMo](https://allenai.org/olmo) project and its pre-training dataset Dolma (data already available, model expected 2024)
 
 ### How to access the weights: Hugging Face 101
 
@@ -213,6 +214,7 @@ To go further:
     * Chain-of-thought prompting: [Chain-of-Thought Prompting Elicits Reasoning in Large Language Models](https://proceedings.neurips.cc/paper_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract-Conference.html) (2022)
     * Chain-of-thought with self-consistency: [Self-Consistency Improves Chain of Thought Reasoning in Language Models](https://arxiv.org/abs/2203.11171) (03-2022)
     * Tree-of-thought prompting: [Tree of Thoughts: Deliberate Problem Solving with Large Language Models (pre-print)](https://arxiv.org/abs/2305.10601) (05-2023) and its [Github repo](https://github.com/princeton-nlp/tree-of-thought-llm)
+* [Continuous batching](https://www.anyscale.com/blog/continuous-batching-llm-inference)
 
 ## Incorporating LLMs in downstream tasks
 
@@ -230,6 +232,31 @@ In Python:
 * The [`spaCy` library](https://spacy.io/usage/spacy-101) allows you to use local models for various NLP tasks.
   * The LLM integration is relatively new. See the [documentation](https://spacy.io/usage/large-language-models)
   * Useful library extensions include [SpanMarker for named entity recognition](https://tomaarsen.github.io/SpanMarkerNER/notebooks/spacy_integration.html)
+
+In [Julia](https://julialang.org/):
+
+* Julia is a [high-performance](https://julialang.org/benchmarks/), [dynamically typed](https://docs.julialang.org/en/v1/manual/types/), open-source language for scientific computing, with Just-in-Time (JIT) compiling. Julia has a less mature (but rapidly improving) ecosystem for machine learning, but it offers some advantages too. Pros:
+  * It is blazing fast (but takes longer to start up), especially if you figure out how its compiler works
+  * It is a clean, consistent, and flexible language that tends to be easier to learn than Python or C. Code is easy to read and maintain.
+  * The combination of type inference and [multiple dispatch](https://www.youtube.com/watch?v=kc9HwsxE1OY) helps code to be reusable in different settings, lets you add custom behavior to existing objects, and allows various packages to work together well, without additional work
+  * Instrospective abilities and differentiable programming
+  * When something is missing, it is easy and elegant to [call Python from Julia](https://github.com/JuliaPy/PythonCall.jl) whenever needed
+  * Excellent GPU support, especially for NVIDIA CUDA
+  * While for long it lacked a mature, complete package for autodiff, there has been progress on that front too, and autodiff does work, if you can write a few lines of code. See the [JuliaDiff](https://juliadiff.org/) project for more.
+  * It can be deployed in production using Docker containers.
+* Cons:
+  * Lack of maturity of package ecosystem means you may have to code a lot of things yourself. It has improved a lot recently, but the documentation hasn't always caught up with the code, and the documentation can be frustrating at times as some examples in it don't (or no longer) run. Overall, it may be a bigger investment in time to get things up and running.
+* Tools to use:
+  * [Flux.jl](https://fluxml.ai/Flux.jl/stable/) is a machine learning library that can do various things, including training neural networks
+  * MLJ.jl
+  * [Differential equations solver](https://github.com/SciML/DifferentialEquations.jl). Examples can be found in the [model zoo](https://github.com/FluxML/model-zoo/). The [quick start](https://fluxml.ai/Flux.jl/stable/models/quickstart/) shows how to fit a simple neural network.
+  * [GPU capabilities](https://juliagpu.org/): You can use existing packages or write GPU kernels in pure Julia.
+    * Best supported: [CUDA.jl](https://cuda.juliagpu.org/stable/) for NVIDIA
+    * Also supported: [AMD GPUs](https://amdgpu.juliagpu.org/stable/)
+    * In early development: [Intel oneAPI](https://juliagpu.org/oneapi/)
+    * Experimental support for Apple [Metal GPUs](https://github.com/JuliaGPU/Metal.jl) (M-series chip)
+  * The new version of [Transformers.jl](https://github.com/chengchingwen/Transformers.jl) is a great implementation of HF's transformers (Still missing flash attention?)
+  * See the [Llama2.jl](https://github.com/cafaxo/Llama2.jl) project for a Julia implementation of Karpathy's [tiny llamas](https://huggingface.co/karpathy/tinyllamas) and llama2.c format. It can train tiny llamas on CPU and run them for inference. It can also run the Llama2-7B GGML quantization q4_k_S variant for inference.
 
 ## What about non-language tasks?
 
