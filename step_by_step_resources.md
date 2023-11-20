@@ -240,13 +240,14 @@ In [Julia](https://julialang.org/):
   * It is blazing fast (but takes longer to start up), especially if you figure out how its compiler works
   * It is a clean, consistent, and flexible language that tends to be easier to learn than Python or C. Code is easy to read and maintain.
   * The combination of type inference and [multiple dispatch](https://www.youtube.com/watch?v=kc9HwsxE1OY) helps code to be reusable in different settings, lets you add custom behavior to existing objects, and allows various packages to work together well, without additional work
-  * Instrospective abilities and differentiable programming
+  * Instrospective abilities (easy to inspect what the compiled code will look like, down to [assembly language](https://en.wikipedia.org/wiki/Assembly_language)) and differentiable programming
   * When something is missing, it is easy and elegant to [call Python from Julia](https://github.com/JuliaPy/PythonCall.jl) whenever needed
   * Excellent GPU support, especially for NVIDIA CUDA
   * While for long it lacked a mature, complete package for autodiff, there has been progress on that front too, and autodiff does seem work for most applications. See the [JuliaDiff](https://juliadiff.org/) project and [Zygote.jl](https://github.com/FluxML/Zygote.jl) for more.
   * It can be deployed in production using Docker containers.
 * Cons:
-  * Lack of maturity of package ecosystem means you may have to code a lot of things yourself. It has improved a lot recently, but the documentation hasn't always caught up with the code, and the documentation can be frustrating at times as some examples in it don't (or no longer) run. Overall, it may be a bigger investment in time to get things up and running.
+  * Lack of maturity of package ecosystem means you may have to code a lot of things yourself. It has improved a lot recently, but the documentation hasn't always caught up with the code, and the documentation can be frustrating at times as some examples in it don't (or no longer) run. Overall, it may be a bigger investment in time to get things up and running. Quality of code in non-core packages vary greatly. A lot of packages have non-helpful error messages or bugs.
+  * Gradient reliability--this may have been fixed since, but people have complained in the past that the autodiff packages were sometimes returning the wrong gradients.
 * Tools to use:
   * [Flux.jl](https://fluxml.ai/Flux.jl/stable/) is a machine learning library that can do various things, including training neural networks
   * MLJ.jl
@@ -257,6 +258,7 @@ In [Julia](https://julialang.org/):
     * In early development: [Intel oneAPI](https://juliagpu.org/oneapi/)
     * Experimental support for Apple [Metal GPUs](https://github.com/JuliaGPU/Metal.jl) (M-series chip)
   * The new version of [Transformers.jl](https://github.com/chengchingwen/Transformers.jl) is a great implementation of HF's transformers (Still missing flash attention?)
+    * See the [tutorial on LLM with Julia](https://info.juliahub.com/large-language-model-llm-tutorial-with-julias-transformers.jl)
   * See the [Llama2.jl](https://github.com/cafaxo/Llama2.jl) project for a Julia implementation of Karpathy's [tiny llamas](https://huggingface.co/karpathy/tinyllamas) and llama2.c format. It can train tiny llamas on CPU and run them for inference. It can also run the Llama2-7B GGML quantization q4_k_S variant for inference.
     * There is a different implementation at [LanguageModels.jl](https://github.com/rai-llc/LanguageModels.jl)
 
