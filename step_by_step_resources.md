@@ -215,6 +215,7 @@ To go further:
     * Chain-of-thought with self-consistency: [Self-Consistency Improves Chain of Thought Reasoning in Language Models](https://arxiv.org/abs/2203.11171) (03-2022)
     * Tree-of-thought prompting: [Tree of Thoughts: Deliberate Problem Solving with Large Language Models (pre-print)](https://arxiv.org/abs/2305.10601) (05-2023) and its [Github repo](https://github.com/princeton-nlp/tree-of-thought-llm)
 * [Continuous batching](https://www.anyscale.com/blog/continuous-batching-llm-inference)
+* Am I limited by memory, compute, or overhead? See Horace He's blog post [Making Deep Learning Go Brrrr From First Principles](https://horace.io/brrr_intro.html)
 
 ## Incorporating LLMs in downstream tasks
 
@@ -242,7 +243,7 @@ In [Julia](https://julialang.org/):
   * Instrospective abilities and differentiable programming
   * When something is missing, it is easy and elegant to [call Python from Julia](https://github.com/JuliaPy/PythonCall.jl) whenever needed
   * Excellent GPU support, especially for NVIDIA CUDA
-  * While for long it lacked a mature, complete package for autodiff, there has been progress on that front too, and autodiff does work, if you can write a few lines of code. See the [JuliaDiff](https://juliadiff.org/) project for more.
+  * While for long it lacked a mature, complete package for autodiff, there has been progress on that front too, and autodiff does seem work for most applications. See the [JuliaDiff](https://juliadiff.org/) project and [Zygote.jl](https://github.com/FluxML/Zygote.jl) for more.
   * It can be deployed in production using Docker containers.
 * Cons:
   * Lack of maturity of package ecosystem means you may have to code a lot of things yourself. It has improved a lot recently, but the documentation hasn't always caught up with the code, and the documentation can be frustrating at times as some examples in it don't (or no longer) run. Overall, it may be a bigger investment in time to get things up and running.
@@ -257,6 +258,7 @@ In [Julia](https://julialang.org/):
     * Experimental support for Apple [Metal GPUs](https://github.com/JuliaGPU/Metal.jl) (M-series chip)
   * The new version of [Transformers.jl](https://github.com/chengchingwen/Transformers.jl) is a great implementation of HF's transformers (Still missing flash attention?)
   * See the [Llama2.jl](https://github.com/cafaxo/Llama2.jl) project for a Julia implementation of Karpathy's [tiny llamas](https://huggingface.co/karpathy/tinyllamas) and llama2.c format. It can train tiny llamas on CPU and run them for inference. It can also run the Llama2-7B GGML quantization q4_k_S variant for inference.
+    * There is a different implementation at [LanguageModels.jl](https://github.com/rai-llc/LanguageModels.jl)
 
 ## What about non-language tasks?
 
