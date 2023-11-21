@@ -148,10 +148,10 @@ Memory can be reduced to 1/3 of the initial requirement by using **LoRA**:
 If that is still untractable, it can be further reduced with **Quantized LoRA** (QLoRA):
 
 * This relies on the `bitsandbytes` [Python library](https://github.com/TimDettmers/bitsandbytes)
-* More about quantization here: 
-  * [QLoRA: Efficient Finetuning of Quantized LLMs](https://arxiv.org/abs/2305.14314) and [LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale](https://arxiv.org/abs/2208.07339) (articles) 
-  * [LLM.int8() and Emergent Features](https://timdettmers.com/2022/08/17/llm-int8-and-emergent-features/) (blog about theory) by Tim Dettmers
-  * [A Gentle Introduction to 8-bit Matrix Multiplication for transformers at scale using Hugging Face Transformers, Accelerate and bitsandbytes](https://huggingface.co/blog/hf-bitsandbytes-integration) (blog about application) by Younes Belkada and Tim Dettmers
+* More about quantization: 
+  * [QLoRA: Efficient Finetuning of Quantized LLMs](https://arxiv.org/abs/2305.14314) (article) 
+  * See below about quantized models for inference
+
 
 With QLoRA, it becomes possible to fine-tune a 65B parameter model on a single 48GB GPU.
 
@@ -200,6 +200,9 @@ Useful resources:
 What is a quantized model?
 
 * [To be written]
+* [LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale](https://arxiv.org/abs/2208.07339) (article) 
+* [LLM.int8() and Emergent Features](https://timdettmers.com/2022/08/17/llm-int8-and-emergent-features/) (blog about theory) by Tim Dettmers
+* [A Gentle Introduction to 8-bit Matrix Multiplication for transformers at scale using Hugging Face Transformers, Accelerate and bitsandbytes](https://huggingface.co/blog/hf-bitsandbytes-integration) (blog about application) by Younes Belkada and Tim Dettmers
 
 Some user friendly / laptop friendly tools:
 
@@ -227,6 +230,7 @@ In R:
 
 In Python:
 
+* Ingest your local data and structure it for use in retrieval augmented generation with LLMs using [LlamaIndex](https://docs.llamaindex.ai/en/stable/). Easy integration with LangChain.
 * Build applications with [LangChain](https://github.com/langchain-ai/langchain)
   * Once you have a model ready for inference, LangChain can help you build applications for it, including sequences of calls or AI agents.
   * Sometimes described as a "prompt-orchestration" tool, it helps coordinate series of (potentially inter-dependent) small tasks with context and memory.
